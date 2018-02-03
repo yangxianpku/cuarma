@@ -1,0 +1,99 @@
+************************************************
+****             CUARMA Readme              ****
+************************************************
+
+Table of Contents
+------------------
+1. Requirements
+2. Installation
+3. Project Layout
+4. Authors and Contact
+5. License
+
+
+
+1. Requirements
+-----------------
+CUARMA requires the following:
+ * A recent C++ compiler (e.g. gcc 4.x.x)
+ * For accessing GPUs and multi-core CPUs: CUDA if only targeting NVIDIA GPUs
+ * For building some of the tutorials: uBLAS (shipped with the Boost libraries).
+
+
+2. Installation
+-----------------
+
+The first step is to extract the file:
+
+Unix-based OS:
+$> gunzip CUARMA-alpha.1.1.1.tar.gz
+$> tar -xf CUARMA-alpha.1.1.1.tar
+$> cd CUARMA-alpha.1.1.1
+
+Windows:
+Extract the file using your favorite compressor/decompressor, e.g. 7-zip.
+
+CUARMA is a header-only library, therefore it is sufficient to copy the subfolder cuarma/ (holding the header files) into you project directory or your system include directory. For instructions on how to set the include paths correctly, please refer to the documentation of your compiler.
+
+Manual builds of the examples are possible and described in the manual.
+In the following we describe the use of CMake:
+
+Unix-based clients:
+ * change to the build directory:
+   $> cd build
+
+ * call cmake
+   $> cmake ..
+
+ * Use 'make' to build all examples:
+   $> make
+   (alternatively, you can build them individually via 'make blas1', 'make cuarma-info', etc.
+
+ * Start the tutorials (optional)
+   $> examples/blas1  
+   $> examples/blas2  
+   $> examples/bisect
+   (...)
+
+Windows:
+ * Open the CMake GUI
+ * Set the source code location ('Where is the source code:') to the extracted CUARMA-1.x.x folder
+ * Set the build folder ('Where to build the binaries:') to the subfolder build/ in the CUARMA-1.x.x folder.
+ * Click on 'Configure' and select your Compiler
+ * Click on 'Configure' again
+ * Click on 'Generate'
+ * Navigate to the build/ folder, open the generated project files with your favorite IDE, and build them.
+
+3. Project Layout
+-----------------
+
+---- CUARMA-1.X.X
+   |
+   |-- build/ - Build directory for building the examples
+   |
+   |-- cmake/ - Additional CMake configuration files
+   |
+   |-- examples/ - Tutorial and benchmarking applications
+        |
+        |-- examples/data/ - Test data for the tutorials and benchmarks
+   |
+   |-- external/ - External libraries
+   |
+   |-- libcuarma/ - Shared library for interfacing some BLAS functionality of cuarma from languages other than C++
+   |
+   |-- tests/ - Automated test suite using CTest
+   |
+   |-- cuarma/ - The library source code
+
+
+4. Contact
+------------------------
+
+For any technical questions related to CUARMA, please use our support mailing list: 
+
+yangxianpku@pku.edu.cn
+
+A. License
+------------
+CUARMA is distributed under the MIT (X11) License. See file LICENSE.
+

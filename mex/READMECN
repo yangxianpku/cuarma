@@ -1,0 +1,130 @@
+************************************************
+<html>
+<center><h3><b>Mex 接口说明</b></h3></center>
+</html>
+
+************************************************
+
+目 录
+------------------
+1. 要求
+2. 安装
+3. 函数
+4. 使用方法
+5. 作者和联系方式
+
+README: [英文版本](README)
+
+-----------------
+**1. 要 求** 
+
+Mex接口需求如下:
+ * matlab 并且其版本最好在2012以上(为了能更好的与Visual Studio或者g++兼容);  
+ * C++ 编译器：Visual Studio(Windwos) 或者 g++(Linux);
+ * cuarma 程序包;
+ * 支持 CUDA 的英伟达显卡，计算能能最好>=3.0;
+ * 英伟达 CUDA 驱动和 CUDA SDK;
+ 
+---
+ **2. 安 装**
+
+Mex 接口安装:
+ * Matlab安装;
+ * CUDA 驱动和 SDK 安装;
+ * 安装与Matlab版本想匹配的Visual Studio(Linux下安装g++)，注意Visual Studio需要与Matlab兼容，即在matlab中使用"mex -setup C++" 能够检测到相应的编译器;
+ 
+
+-----------------
+ **3. 接口函数**  
+ 
+Mex接口中包含如下函数:
+
+函数名 | 说明
+---|---
+ **cuarmaGetScalar**   |  从Matlab mxArray中获取cuarma标量，模板
+ **cuarmaGetDouble**   |  从Matlab mxArray中获取double型cuarma标量
+ **cuarmaGetData**     |  从Matlab mxArray中获取cuarma实数矩阵
+ **cuarmaGetImagData** |  从Matlab mxArray中获取cuarma纯虚数
+ **cuarmaGetPr**       |  从Matlab mxArray中获取cuarma double型实数矩阵
+ **cuarmaGetPi**       |  从Matlab mxArray中获取cuarma double型纯虚数矩阵
+ **cuarmaGetComplex**  |  从Matlab mxArray中获取cuarma 复数矩阵
+ **cuarmaSetData**     |  与Get函数相反
+ **cuarmaSetImagData** |  与Get函数相反
+ **cuarmaSetPr**       |  与Get函数相反
+ **cuarmaSetPi**       |  与Get函数相反
+ **cuarmaSetComplex**  |  与Get函数相反
+ **cuarmaWriteDataToMatFile**      | 写 cuarma 实数矩阵到matlab mat文件
+ **cuarmaWriteImagDataToMatFile**  | 写 cuarma 纯虚数矩阵到matlab mat文件
+ **cuarmaWriteComplexToMatFile**   | 写 cuarma 复数矩阵到matlab mat文件
+ **cuarmaWritePrToMatFile**        | 写 cuarma double 实数矩阵到matlab mat文件
+ **cuarmaWritePiToMatFile**        | 写 cuarma double 纯虚数矩阵到matlab mat文件
+ **cuarmaReadDataFromMatFile**     | 写 cuarma 复数矩阵到matlab mat文件
+ **cuarmaReadImagDataFromMatFile** | 与 Write 函数相反
+ **cuarmaReadComplexFromMatFile**  | 与 Write 函数相反
+ **cuarmaReadPrFromMatFile**       | 与 Write 函数相反
+ **cuarmaReadPiFromMatFile**       | 与 Write 函数相反
+ 
+
+-----------------
+ **4. 使用方法** 
+ 
+Mex 接口使用方法:
+
+1. **代码编写**
+ * 在 Matlab 中编写代码  
+    - 新建 .cu 结尾的 cuda 代码;
+    - 将 cuarma 项目的路径设置到 matlab 的搜索路径中(这步可以不做，编译的时候再操作);
+    - 如果需要使用CUDA计算，代码头部需要加入
+        ```c++
+        #ifndef CUARMA_WITH_CUDA
+        #define CUARMA_WITH_CUDA
+        #endif
+        ```
+    - 如果需要使用并且有现成的boost库，代码头部需要加入
+        ```C++
+        #ifndef CUARMA_WITH_UBLAS
+        #define CUARMA_WITH_UBLAS
+        #endif
+        ```
+    - 代码中引入 **"mex.h"**,**"cuarmaMex.hpp"** 和 **"cuarma/cuarma"**.
+
+ * 在 Visual Studi o中编写代码  
+ 
+    使用Visual Studio的目的是使用 Visual Studio 在插件 VASSISTX 下的代码自动提示功能.
+    
+    - 将 **mex.h** 的目录(通常是 "**matlabroot\extern\include**")加入到附加包含目录;
+    - 将 **cuarma** 的目录加入到项目的附件包含目录，如 **"D:\Admin\CUARMA-alpha.1.1.1"**;
+    - 将 **cuarmaMex.hpp** 加入到附加包含目录;
+    - 将 **boost** 库(如果有)加入到项目的附加包含目录;
+    - 编写代码 abc.cu
+
+ * 在 Eclippse 中编写源代码
+ 
+    - 在 Eclipse 中通常是 MinGW 或者 Linux 环境下，网上有很多现成的解决方法，类似 Visual Studio.
+    
+2. **编译与运行**
+
+* **Windows** 环境下
+
+    - 编写开发的源代码;
+    - 将 **cuarmaMex.hpp** 文件复制到当前目录下
+    - 将 **mex_CUDA_win64.xml** 文件(通常在 "**matlabroot\toolbox\distcomp\gpu\extern\src\mex\win64**" 路径下)，进行一定的修改.[参考地址](http://blog.csdn.net/hanlin_tan/article/details/48790273),cuarma项目mex目录下已经有作者修改好的 **mex_CUDA_win64.xml** 可直接使用.(前提是环境相同，作者的环境是 **Windows10 x64 + CUDA 8.0**)
+    - 使用作者编写好的 **mvmexxml.m** 函数进行编译代码，编译方式如 **nvmexxml("abc.cu")**
+    
+    
+* **Linux** 环境下
+  
+   - 待更新
+
+
+
+-----------------
+**5. 作者及联系方式**  
+
+用户对于 **cuarma** 有任何使用问题，可以通过以下邮箱联系到作者：
+
+yangxianpku@pku.edu.cn
+
+许可证
+------------
+CUARMA 发布在 MIT (X11) 许可证下.

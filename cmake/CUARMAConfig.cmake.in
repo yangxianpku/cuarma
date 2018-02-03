@@ -1,0 +1,32 @@
+#- CMake configuration file for CUARMA
+# Sets the following variables if CUARMA was found:
+#  CUARMA_FOUND         : TRUE if found
+#  CUARMA_INCLUDE_DIRS  : Include-directories to be used
+#  CUARMA_LIBRARIES     : Libraries to link against
+# Although CUARMA is a headers-only library, it still requires an OpenCL
+# implementation, which is why it is necessary to link against a library.
+
+# Compute paths
+get_filename_component(CUARMA_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(EXISTS "${CUARMA_CMAKE_DIR}/CMakeCache.txt")
+   # in build tree
+   get_filename_component(CUARMA_INSTALL_PREFIX "${CUARMA_CMAKE_DIR}" PATH)
+   set(CUARMA_INCLUDE_DIR "${_CUARMA_PREFIX}")
+else()
+   set(CUARMA_INSTALL_PREFIX "${CUARMA_CMAKE_DIR}/@CONF_REL_INSTALL_PREFIX@")
+   set(CUARMA_INCLUDE_DIR "${CUARMA_CMAKE_DIR}/@CONF_REL_INCLUDE_DIR@")
+endif()
+
+# Find CUDA
+set(_CUARMA_CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}")
+list(INSERT CMAKE_MODULE_PATH 0 "${CUARMA_CMAKE_DIR}")
+if(CUARMA_FIND_REQUIRED)
+   find_package(CUDA QUIET REQUIRED)
+else()
+   find_package(CUDA QUIET)
+endif()
+set(CMAKE_MODULE_PATH "${_CUARMA_CMAKE_MODULE_PATH}")
+
+# Set up variables
+set(CUARMA_INCLUDE_DIRS "${CUARMA_INCLUDE_DIR}" ${CUDA_INCLUDE_DIRS})
+set(CUARMA_LIBRARIES ${CUARMA_LIBRARIES})

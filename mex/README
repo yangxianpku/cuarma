@@ -1,0 +1,130 @@
+************************************************
+<html>
+<center><h3><b>Mex Interface ReadMe</b></h3></center>
+</html>
+
+************************************************
+
+Table of Content
+------------------
+1. Requirements
+2. Installation
+3. Functions of Interface
+4. Usage: Coding and Compling
+5. Author and Contact
+
+README: [Chinese Version](README)
+
+-----------------
+**1. 要 求** 
+
+Mex Interface Requirements:
+ * matlab, whose version better higer than 2010b (in order to stay compatible with Visual Studio or g++);  
+ * C++ complier：Visual Studio(Windwos) or g++(Linux);
+ * cuarma library;
+ * Nvidia Graphics card，whose Computing ability >=3.0 is prefer;
+ * CUDA driver and CUDA SDK;
+ 
+---
+ **2. Installation**
+
+Mex Interface Installation:
+ * Matlab Installation;
+ * CUDA driver and SDK Installation;
+ * Visual Studio(g++ under Linux)，keep compatibility with Visual Studio，verification "mex -setup C++" in matlab command line;
+ 
+
+-----------------
+ **3. Interface Functions**  
+ 
+Mex Functions:
+
+funcation | illustration
+---|---
+ **cuarmaGetScalar**   |   get cuarma scalar from matlab mxArray
+ **cuarmaGetDouble**   |   get cuarma double scalar from matlab mxArray
+ **cuarmaGetData**     |   get cuarma real  matrix from matlab mxArray
+ **cuarmaGetImagData** |   get cuarma image matrix from matlab mxArray
+ **cuarmaGetPr**       |   get cuarma double matrix from matlab mxArray
+ **cuarmaGetPi**       |   get cuarma double image matrix from matlab mxArray
+ **cuarmaGetComplex**  |   get cuarma complex matrix from matlab mxArray
+ **cuarmaSetData**     |  
+ **cuarmaSetImagData** |  
+ **cuarmaSetPr**       |  
+ **cuarmaSetPi**       |  
+ **cuarmaSetComplex**  |  
+ **cuarmaWriteDataToMatFile**      | write cuarma real matrix to matlab mat file to specific variable
+ **cuarmaWriteImagDataToMatFile**  | write cuarma imag matrix to matlab mat file to specific variable
+ **cuarmaWriteComplexToMatFile**   | write cuarma complex matrix to matlab mat file to specific variable
+ **cuarmaWritePrToMatFile**        | write cuarma double matrix to matlab mat file to specific variable
+ **cuarmaWritePiToMatFile**        | write cuarma double imag matrix to matlab mat file to specific variable
+ **cuarmaReadDataFromMatFile**     | 
+ **cuarmaReadImagDataFromMatFile** | 
+ **cuarmaReadComplexFromMatFile**  | 
+ **cuarmaReadPrFromMatFile**       | 
+ **cuarmaReadPiFromMatFile**       | 
+ 
+
+-----------------
+ **4. Usage: Coding and Compling** 
+ 
+Mex usage:
+
+1. **coding**
+ * Coding in Matlab
+    - create a cuda file end with .cu ;
+    - set path of cuarma lib to matlab "Setting Path";
+    - include the following code if CUDA is available
+        ```c++
+        #ifndef CUARMA_WITH_CUDA
+        #define CUARMA_WITH_CUDA
+        #endif
+        ```
+    - include the following code if BOOST is available
+        ```C++
+        #ifndef CUARMA_WITH_UBLAS
+        #define CUARMA_WITH_UBLAS
+        #endif
+        ```
+    - include **"mex.h"**,**"cuarmaMex.hpp"** and **"cuarma/cuarma"** in your code.
+
+ * Coding in Visual Studio
+ 
+    The purpose of using Visual Studio is to use Visual Studio to automatically prompt the code under the plug-in VASSISTX.
+    
+    - add **mex.h** path(usually "**matlabroot\extern\include**") to "Additional Include Directories" for Visual Studio;
+    - add **cuarma** lib path to "Additional Include Directories" for Visual Studio，such **"D:\Admin\CUARMA-alpha.1.1.1"**;
+    - add **cuarmaMex.hpp** path to  "Additional Include Directories" for Visual Studio;
+    - add **boost** lib path(if exists) to "Additional Include Directories" for Visual Studio;
+    - coding abc.cu file
+
+ * Coding in Eclippse 
+ 
+    - In Eclipse, usually in MinGW or Linux environment, there are a lot of ready-made solutions on the Internet, similar to Visual Studio.
+    
+2. **Compling and running**
+
+* Under **Windows**
+
+    - coding you code;
+    - copy **cuarmaMex.hpp** to current path
+    - copy and modify **mex_CUDA_win64.xml** file(usually locates "**matlabroot\toolbox\distcomp\gpu\extern\src\mex\win64**").[Configuration Tutorial](http://blog.csdn.net/hanlin_tan/article/details/48790273),there is ready-made **mex_CUDA_win64.xml** at "cuarma/mex/" for use.(provided that，your pc has the same environmental **Windows10 x64 + CUDA 8.0** with the me.)
+    - compling your code with **mvmexxml.m** made by me，such **nvmexxml("abc.cu")**
+    
+    
+* Under **Linux** 
+  
+   - Pending update
+
+
+
+-----------------
+**5. Author and Contact**  
+
+For any technical questions related to CUARMA, please use our support mailing list: 
+
+yangxianpku@pku.edu.cn
+
+A. License
+------------
+CUARMA is distributed under the MIT (X11) License. See file LICENSE.

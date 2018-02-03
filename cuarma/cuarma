@@ -1,0 +1,200 @@
+// system include
+#include <float.h>
+#include <cfloat>
+#include <numeric>
+#include <limits>
+#include <math.h>
+#include <string>
+#include <cstring>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cstddef>
+#include <cmath>
+#include <complex>
+#include <ctime>
+#include <cctype>
+#include <algorithm>
+#include <utility>
+#include <iomanip>
+#include <iostream>
+#include <stdlib.h>
+#include <stddef.h>
+#include <deque>
+#include <assert.h>
+#include <stdexcept>
+
+// CUDA relative
+#ifndef CUARMA_WITH_CUDA
+#include <cuda_runtime.h>
+#include <device_functions.h>
+#include <device_launch_parameters.h>
+#include <cublas_v2.h>
+#include <cuda.h>
+#include <driver_types.h>
+#include <curand.h>
+#endif
+
+// boost
+#ifdef CUARMA_WITH_UBLAS
+#include <boost/numeric/ublas/vector.hpp>
+#include "boost/numeric/ublas/vector_proxy.hpp"
+#include <boost/numeric/ublas/matrix.hpp>
+#include "boost/numeric/ublas/matrix_proxy.hpp"
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <boost/serialization/array_wrapper.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/triangular.hpp>
+#include "boost/numeric/ublas/lu.hpp"
+#endif
+
+// user-defined include
+#include "cuarma/vector.hpp"
+#include "cuarma/meta/enable_if.hpp"
+#include "cuarma/forwards.h"
+#include "cuarma/meta/predicate.hpp"
+#include "cuarma/meta/result_of.hpp"
+#include "cuarma/meta/tag_of.hpp"
+#include "cuarma/meta/type_of.hpp"
+
+// tools
+#include "cuarma/tools/timer.hpp"
+#include "cuarma/tools/shared_ptr.hpp"
+#include "cuarma/tools/adapter.hpp"
+#include "cuarma/tools/tools.hpp"
+#include "cuarma/tools/sha1.hpp"
+#include "cuarma/tools/random.hpp"
+#include "cuarma/tools/matrix_generation.hpp"
+#include "cuarma/tools/matrix_size_deducer.hpp"
+#include "cuarma/tools/entry_proxy.hpp"
+
+#include "cuarma/detail/vector_def.hpp"
+#include "cuarma/detail/matrix_def.hpp"
+
+// traits
+#include "cuarma/traits/clear.hpp"
+#include "cuarma/traits/context.hpp"
+#include "cuarma/traits/fill.hpp"
+#include "cuarma/traits/handle.hpp"
+#include "cuarma/traits/row_major.hpp"
+#include "cuarma/traits/size.hpp"
+#include "cuarma/traits/start.hpp"
+#include "cuarma/traits/stride.hpp"
+
+// io
+#include "cuarma/io/matrix_market.hpp"
+
+// backend
+#include "cuarma/backend/memory.hpp"
+
+#include "cuarma/device_specific/forwards.h"
+
+// root
+#include "cuarma/scalar.hpp"
+#include "cuarma/vector.hpp"
+#include "cuarma/vector_proxy.hpp"
+#include "cuarma/matrix.hpp"
+#include "cuarma/matrix_proxy.hpp"
+#include "cuarma/context.hpp"
+#include "cuarma/compressed_matrix.hpp"
+#include "cuarma/compressed_compressed_matrix.hpp"
+#include "cuarma/coordinate_matrix.hpp"
+#include "cuarma/ell_matrix.hpp"
+#include "cuarma/fft.hpp"
+#include "cuarma/hyb_matrix.hpp"
+#include "cuarma/range.hpp"
+#include "cuarma/slice.hpp"
+#include "cuarma/sliced_ell_matrix.hpp"
+
+// blas
+#include "cuarma/blas/scalar_operations.hpp"
+#include "cuarma/blas/norm_1.hpp"
+#include "cuarma/blas/norm_2.hpp"
+#include "cuarma/blas/norm_inf.hpp"
+#include "cuarma/blas/norm_frobenius.hpp"
+#include "cuarma/blas/inner_prod.hpp"
+#include "cuarma/blas/vector_operations.hpp"
+#include "cuarma/blas/sum.hpp"
+#include "cuarma/blas/misc_operations.hpp"
+#include "cuarma/blas/sparse_matrix_operations.hpp"
+#include "cuarma/blas/matrix_operations.hpp"
+#include "cuarma/blas/bicgstab.hpp"
+#include "cuarma/blas/bisect_gpu.hpp"
+#include "cuarma/blas/cg.hpp"
+#include "cuarma/blas/mixed_precision_cg.hpp"
+#include "cuarma/blas/direct_solve.hpp"
+#include "cuarma/blas/eig.hpp"
+#include "cuarma/blas/fft_operations.hpp"
+#include "cuarma/blas/gmres.hpp"
+#include "cuarma/blas/ichol.hpp"
+#include "cuarma/blas/ilu.hpp"
+#include "cuarma/blas/ilu_operations.hpp"
+#include "cuarma/blas/iterative_operations.hpp"
+#include "cuarma/blas/jacobi_precond.hpp"
+#include "cuarma/blas/lu.hpp"
+#include "cuarma/blas/misc_operations.hpp"
+#include "cuarma/blas/nmf.hpp"
+#include "cuarma/blas/prod.hpp"
+#include "cuarma/blas/qr-method-common.hpp"
+
+#ifndef CUARMA_WITH_UBLAS
+	#include "cuarma/blas/qr-method.hpp"
+	#include "cuarma/blas/qr.hpp"
+#endif
+
+#include "cuarma/blas/row_scaling.hpp"
+#include "cuarma/blas/tql2.hpp"
+
+
+// cuda
+#include "cuarma/blas/cuda/common.hpp"
+#include "cuarma/blas/cuda/bisect_util.hpp"
+#include "cuarma/blas/cuda/bisect_kernel_calls.hpp"
+#include "cuarma/blas/cuda/direct_solve.hpp"
+#include "cuarma/blas/cuda/fft_operations.hpp"
+#include "cuarma/blas/cuda/ilu_operations.hpp"
+#include "cuarma/blas/cuda/iterative_operations.hpp"
+#include "cuarma/blas/cuda/scalar_operations.hpp"
+#include "cuarma/blas/cuda/matrix_operations.hpp"
+#include "cuarma/blas/cuda/misc_operations.hpp"
+#include "cuarma/blas/cuda/nmf_operations.hpp"
+#include "cuarma/blas/cuda/sparse_matrix_operations.hpp"
+#include "cuarma/blas/cuda/spgemm_rmerge.hpp"
+
+// Thrust
+#ifndef CUARMA_WITH_THRUST
+	#include <thrust/scan.h>
+	#include <thrust/device_ptr.h>
+	#include "cuarma/blas/cuda/spgemm.hpp"
+#endif
+
+// host_based
+#include "cuarma/blas/host_based/common.hpp"
+#include "cuarma/blas/host_based/direct_solve.hpp"
+#include "cuarma/blas/host_based/fft_operations.hpp"
+#include "cuarma/blas/host_based/scalar_operations.hpp"
+#include "cuarma/blas/host_based/matrix_operations.hpp"
+#include "cuarma/blas/host_based/ilu_operations.hpp"
+#include "cuarma/blas/host_based/iterative_operations.hpp"
+#include "cuarma/blas/host_based/misc_operations.hpp"
+#include "cuarma/blas/host_based/nmf_operations.hpp"
+#include "cuarma/blas/host_based/sparse_matrix_operations.hpp"
+
+// detail
+#include "cuarma/blas/detail/bisect/gerschgorin.hpp"
+#include "cuarma/blas/detail/bisect/bisect_large.hpp"
+#include "cuarma/blas/detail/bisect/bisect_small.hpp"
+
+
+// misc
+#include "cuarma/misc/bandwidth_reduction.hpp"
+
+// scheduler
+#include "cuarma/scheduler/forwards.h"
+#include "cuarma/scheduler/preset.hpp"
+#include "cuarma/scheduler/execute_generic_dispatcher.hpp"
+#include "cuarma/scheduler/execute.hpp"
